@@ -2,11 +2,13 @@ mod todo_ops;
 mod menu_io;
 mod models;
 
+use console::{Color, style};
+
 use std::process::exit;
 use crate::models::TodoItem;
 
 fn main() {
-    println!("Welcome to *rusty-todos*");
+    println!("\nWelcome to {}", style("rusty-todos").bold().blue().bg(Color::Red));
 
     let mut pending_todos: Vec<TodoItem> = Vec::new();
     let mut completed_todos: Vec<TodoItem> = Vec::new();
@@ -29,12 +31,10 @@ fn main() {
                         let current_todo = &pending_todos[chosen_todo_index - 1];
                         todo_ops::open_a_todo(current_todo);
 
-                        let returned_with = operate_on_a_todo(
+                        operate_on_a_todo(
                             chosen_todo_index,
                             &mut pending_todos, &mut completed_todos);
-                        if returned_with == 0 {
-                            continue;
-                        }
+                        continue;
                     }
                 }
             }
@@ -73,8 +73,7 @@ fn main() {
 fn operate_on_a_todo(
     chosen_todo_index: usize,
     pending_todos: &mut Vec<TodoItem>,
-    completed_todos: &mut Vec<TodoItem>) -> usize {
-
+    completed_todos: &mut Vec<TodoItem>) {
     let current_todo = &pending_todos[chosen_todo_index].clone();
 
     loop {
@@ -105,8 +104,6 @@ fn operate_on_a_todo(
             }
         }
     };
-
-    0
 }
 
 

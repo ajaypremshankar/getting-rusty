@@ -1,7 +1,7 @@
 use console::Term;
 
 pub fn choose_from_main_menu() -> usize {
-    println!("\n_____________________");
+    println!("_____________________");
     println!("Main menu:");
 
     println!("0. Exit");
