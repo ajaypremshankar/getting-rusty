@@ -31,7 +31,7 @@ fn main() {
 
                         let returned_with = operate_on_a_todo(
                             chosen_todo_index,
-                            current_todo, &mut pending_todos, &mut completed_todos);
+                            &mut pending_todos, &mut completed_todos);
                         if returned_with == 0 {
                             continue;
                         }
@@ -72,9 +72,11 @@ fn main() {
 
 fn operate_on_a_todo(
     chosen_todo_index: usize,
-    current_todo: &TodoItem,
     pending_todos: &mut Vec<TodoItem>,
     completed_todos: &mut Vec<TodoItem>) -> usize {
+
+    let current_todo = &pending_todos[chosen_todo_index].clone();
+
     loop {
         menu_io::show_todo_menu();
         let chosen_item_on_todo_menu = menu_io::choose_option();
