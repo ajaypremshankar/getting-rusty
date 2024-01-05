@@ -1,6 +1,7 @@
 use std::io;
 use rustyline::DefaultEditor;
 use crate::models::{TodoItem, TodoStatus};
+use crate::models::TodoStatus::DONE;
 
 pub fn get_todo_from_user() -> TodoItem {
     let mut option = String::new();
@@ -11,8 +12,8 @@ pub fn get_todo_from_user() -> TodoItem {
         .expect("Failed to read line");
 
     TodoItem {
-        content: option.to_string(),
-        status: TodoStatus::PENDING
+        content: option.trim().to_string(),
+        status: TodoStatus::PENDING,
     }
 }
 
@@ -23,7 +24,7 @@ pub fn edit_todo(todo: &TodoItem) -> TodoItem {
 
     TodoItem {
         content: input,
-        status: TodoStatus::PENDING
+        status: TodoStatus::PENDING,
     }
 }
 
@@ -42,5 +43,8 @@ pub fn mark_todo_done(chosen_todo_index: usize,
                       pending_todos: &mut Vec<TodoItem>,
                       completed_todos: &mut Vec<TodoItem>) {
     let todo = pending_todos.remove(chosen_todo_index - 1);
-    completed_todos.push(todo);
+    completed_todos.push(TodoItem {
+        content: todo.content,
+        status: DONE,
+    });
 }

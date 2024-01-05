@@ -1,7 +1,6 @@
 use std::fs::File;
 use std::io;
-use std::io::{ErrorKind, Write};
-use serde_json::json;
+use std::io::{ErrorKind};
 use crate::models::{TodoItem, TodoStatus};
 
 pub fn load_or_create_file() -> (Vec<TodoItem>, Vec<TodoItem>) {
@@ -36,21 +35,10 @@ pub fn load_or_create_file() -> (Vec<TodoItem>, Vec<TodoItem>) {
     (pending_todos, completed_todos)
 }
 
-// pub fn save_state(pending: Vec<TodoItem>, done: Vec<TodoItem>) {
-//     let all = pending.into_iter().chain(done.into_iter()).collect();
-//
-//     match File::open("todos.json") {
-//         Ok(mut file) => {
-//             let content = serde_json::to_string(all).unwrap();
-//             file.write_all(content.as_bytes()).expect("TODO: panic message");
-//             file.flush().expect("TODO: panic message");
-//             Ok(())
-//         }
-//         Err(err) => {
-//             if err.kind() == ErrorKind::NotFound {
-//                 File::create("todos.json").unwrap();
-//                 save_state(pending, done);
-//             }
-//         }
-//     };
-// }
+pub fn save_state(pending: Vec<TodoItem>, done: Vec<TodoItem>) {
+    let all: Vec<TodoItem> = pending.into_iter().chain(done.into_iter()).collect();
+
+    std::fs::write(
+        "todos.json",
+        serde_json::to_string_pretty(&all).unwrap()).unwrap();
+}

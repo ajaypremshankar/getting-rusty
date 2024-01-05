@@ -6,6 +6,7 @@ mod file_io;
 use console::{Color, style};
 
 use std::process::exit;
+use crate::file_io::save_state;
 use crate::models::TodoItem;
 use crate::todo_ops::mark_todo_done;
 
@@ -23,7 +24,7 @@ fn main() {
 
         match option {
             0 => {
-                //save_state(pending_todos, completed_todos);
+                save_state(pending_todos, completed_todos);
                 exit(0)
             },
             1 => {
@@ -80,15 +81,15 @@ fn operate_on_a_todo(
             }
             1 => { // edit
                 let edited_todo = todo_ops::edit_todo(current_todo);
-                pending_todos[chosen_todo_index] = edited_todo;
+                pending_todos[chosen_item_on_todo_menu] = edited_todo;
                 continue;
             }
             2 => { // complete
-                mark_todo_done(chosen_todo_index, pending_todos, completed_todos);
+                mark_todo_done(chosen_item_on_todo_menu, pending_todos, completed_todos);
                 break;
             }
             3 => { // remove
-                pending_todos.remove(chosen_todo_index);
+                pending_todos.remove(chosen_item_on_todo_menu);
                 break;
             }
             num => {
